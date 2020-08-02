@@ -1,0 +1,63 @@
+import java.io.*; 
+import java.lang.*; 
+
+public class Main {
+    public static void main(String[] args) {
+        String artifacts = "1A 1B,2C 2C" ;
+        String searched = "1B";
+        String[] artifactsPositions = artifacts.split(",");
+        String[] searchedCells = searched.split(" ");
+        int artifactsComplete = 0;
+        int artifactsIncomplete = 0;
+        for (int i = 0; i < artifactsPositions.length ; i ++){
+            int count = 0;
+            String[] artifactsPositionCells = artifactsPositions[i].split(" ");
+            String[] cellArray = new String[4];
+            String tl = artifactsPositions[i].split(" ")[0];
+            String br = artifactsPositions[i].split(" ")[1] ;
+            int arrayCounter = 0;
+            if(tl.equals(br)){
+                cellArray[0] = tl;
+                arrayCounter =1;
+            }else{
+                if((tl.charAt(0) != br.charAt(0)) && (tl.charAt(1) == br.charAt(1))){
+                    for (char intCount = tl.charAt(0); intCount <= br.charAt(0); intCount++) {
+                        cellArray[arrayCounter] = new StringBuilder().append(intCount).append(tl.charAt(1)).toString();
+                        arrayCounter = arrayCounter+1;
+                    }   
+                } else if((tl.charAt(0) == br.charAt(0)) && (tl.charAt(1) != br.charAt(1))){
+                    for (char alphabet = tl.charAt(1); alphabet <= br.charAt(1); alphabet++) {
+                        cellArray[arrayCounter] = new StringBuilder().append(tl.charAt(0)).append(alphabet).toString();
+                        arrayCounter = arrayCounter+1;
+                    }
+                } else if((tl.charAt(0) != br.charAt(0)) && (tl.charAt(1) != br.charAt(1))){
+    cellArray[0] = tl;
+    cellArray[1] = new StringBuilder().append(tl.charAt(0)).append(br.charAt(1)).toString();
+    cellArray[2] = new StringBuilder().append(br.charAt(0)).append(tl.charAt(1)).toString();
+    cellArray[3] = br;
+                    arrayCounter = 4;                 
+                }
+            }
+            for (int j = 0; j < cellArray.length ; j ++){
+                for (int k = 0; k < searchedCells.length ; k ++){
+                    
+                    if(cellArray[j] != null){
+                    if(cellArray[j].equals(searchedCells[k])){
+                        count = count + 1 ;
+                        break;
+                    }
+                        } else {
+                        break;
+                    }
+                }
+            }
+            if(arrayCounter == count){
+                artifactsComplete = artifactsComplete +1;
+            } else if((count != 0) && (arrayCounter != count)){
+                artifactsIncomplete = artifactsIncomplete + 1;
+            }
+        }
+               System.out.println("["+artifactsComplete+","+artifactsIncomplete+"]"); 
+        // return new int[]{artifactsComplete,artifactsIncomplete};
+    }
+}
